@@ -1,7 +1,7 @@
 OSCsharp library
 ================
 
-Based on [Bespoke Open Sound Control Library](http://www.bespokesoftware.org/wordpress/?page_id=69).
+Forked from [Bespoke Open Sound Control Library](http://www.bespokesoftware.org/wordpress/?page_id=69).
 
 **Original author:** Paul Varcholik (pvarchol@bespokesoftware.org)
 
