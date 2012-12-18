@@ -118,7 +118,7 @@ namespace OSCsharp.Utils {
         /// <param name="proximityThreshold">The proximity threshold.</param>
         /// <returns>true if the difference between the values is less than or equal to <paramref name="proximityThreshold"/>; otherwise, false.</returns>
         public static bool ValuesInProximity(int value1, int value2, int proximityThreshold) {
-            return Math.Abs(value1 - value2) <= proximityThreshold;
+            return System.Math.Abs(value1 - value2) <= proximityThreshold;
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace OSCsharp.Utils {
         /// <param name="proximityThreshold">The proximity threshold.</param>
         /// <returns>true if the difference between the values is less than or equal to <paramref name="proximityThreshold"/>; otherwise, false.</returns>
         public static bool ValuesInProximity(double value1, double value2, double proximityThreshold) {
-            return Math.Abs(value1 - value2) <= proximityThreshold;
+            return System.Math.Abs(value1 - value2) <= proximityThreshold;
         }
 
         /// <summary>
