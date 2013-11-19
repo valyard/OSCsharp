@@ -47,7 +47,7 @@ namespace OSCsharp.Net
         private volatile bool acceptingConnections;
         private AsyncCallback callback;
 
-        public UDPReceiver(int port, bool consumeParsingExceptions = true) : this(IPAddress.Loopback, port, consumeParsingExceptions)
+        public UDPReceiver(int port, bool consumeParsingExceptions = true) : this(IPAddress.Any, port, consumeParsingExceptions)
         {}
 
         public UDPReceiver(int port, IPAddress multicastAddress, bool consumeParsingExceptions = true) : this(IPAddress.Loopback, port, TransmissionType.Multicast, multicastAddress, consumeParsingExceptions)
@@ -150,6 +150,7 @@ namespace OSCsharp.Net
             catch (ObjectDisposedException)
             {
                 // Suppress error
+                var a = 2;
             }
         }
 
