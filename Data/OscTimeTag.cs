@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @author Paul Varcholik / pvarchol@bespokesoftware.org
+ * @author Valentin Simonov / http://va.lent.in/
+ */
+
+using System;
 using System.Collections.Generic;
 using OSCsharp.Utils;
 
