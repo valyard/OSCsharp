@@ -1,27 +1,14 @@
 ## OSCsharp library
 
-**OSC** library for **Unity3d**.
+**OSC** library for **C#** and **Unity**.
 
-Forked from [Bespoke Open Sound Control Library](http://www.bespokesoftware.org/wordpress/?page_id=69).  
-Licensed under the [Microsoft Public License](http://www.opensource.org/licenses/ms-pl.html). See the License.txt file for more information.
-
-**Original author:** Paul Varcholik (pvarchol@bespokesoftware.org)
+Based on [Bespoke Open Sound Control Library](http://www.bespokesoftware.org/wordpress/?page_id=69) by Paul Varcholik (pvarchol@bespokesoftware.org).  
+Licensed under MIT license.
 
 ## Features
 - Full OSC spec implementation,
 - Supports Osc Messages and Bundles,
 - Easy API,
-- Client and Server implementations,
-- TCP and UDP transport protocols,
+- Can receive OSC messages over UDP,
 - Unicast, broadcast, and multicast,
-- Good documentation.
-
-## Changes from original repo
-- GitHub repository,
-- One VS project,
-- Built for .NET 3.5,
-- No dependancies incompatible with Unity3d (System.Drawing for example).
-
-## Planed changes
-- Basic refactoring,
-- Bug fixes.
+- Works in Unity and .NET 2.
