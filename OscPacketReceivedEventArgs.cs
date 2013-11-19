@@ -1,28 +1,15 @@
 using System;
-using OSCsharp.Utils;
+using OSCsharp.Data;
 
-namespace OSCsharp {
-    /// <summary>
-    /// Arguments for packet received events.
-    /// </summary>
-    public class OscPacketReceivedEventArgs : EventArgs {
-        /// <summary>
-        /// Gets the <see cref="OscPacket"/> received.
-        /// </summary>
-        public OscPacket Packet {
-            get { return mPacket; }
+namespace OSCsharp
+{
+    public class OscPacketReceivedEventArgs : EventArgs
+    {
+        public OscPacket Packet { get; private set; }
+
+        public OscPacketReceivedEventArgs(OscPacket packet)
+        {
+            Packet = packet;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OscMessageReceivedEventArgs"/> class.
-        /// </summary>
-        /// <param name="packet">The <see cref="OscPacket"/> received.</param>
-        public OscPacketReceivedEventArgs(OscPacket packet) {
-            Assert.ParamIsNotNull(packet);
-
-            mPacket = packet;
-        }
-
-        private OscPacket mPacket;
     }
 }
