@@ -45,6 +45,7 @@ namespace OSCsharp.Net
 
         private UdpClient udpClient;
         private volatile bool acceptingConnections;
+        private AsyncCallback callback;
 
         public UDPReceiver(int port, bool consumeParsingExceptions = true) : this(IPAddress.Loopback, port, consumeParsingExceptions)
         {}
@@ -72,6 +73,7 @@ namespace OSCsharp.Net
             }
 
             ConsumeParsingExceptions = consumeParsingExceptions;
+            callback = new AsyncCallback(endReceive);
         }
 
         public void Start()
@@ -108,7 +110,7 @@ namespace OSCsharp.Net
             UdpState udpState = new UdpState(udpClient, IPEndPoint);
 
             acceptingConnections = true;
-            udpClient.BeginReceive(endReceive, udpState);
+            udpClient.BeginReceive(callback, udpState);
         }
 
         public void Stop()
@@ -142,7 +144,7 @@ namespace OSCsharp.Net
 
                 if (acceptingConnections)
                 {
-                    udpClient.BeginReceive(endReceive, udpState);
+                    udpClient.BeginReceive(callback, udpState);
                 }
             }
             catch (ObjectDisposedException)
