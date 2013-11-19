@@ -76,7 +76,7 @@ namespace OSCsharp.Data
                 if ((value is OscPacket))
                 {
                     byte[] packetBytes = ((OscPacket)value).ToByteArray();
-                    Assert.IsTrue(packetBytes.Length%4 == 0);
+                    if (packetBytes.Length%4 != 0) throw new Exception();
 
                     data.AddRange(ValueToByteArray(packetBytes.Length));
                     data.AddRange(packetBytes);
@@ -86,7 +86,7 @@ namespace OSCsharp.Data
             return data.ToArray();
         }
 
-        public static OscBundle FromByteArray(byte[] data, ref int start, int end)
+        public static new OscBundle FromByteArray(byte[] data, ref int start, int end)
         {
             string address = ValueFromByteArray<string>(data, ref start);
             if (address != BUNDLE_PREFIX) throw new ArgumentException();

@@ -2,10 +2,9 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using OSCsharp.Data;
-using OSCsharp.Net;
 using OSCsharp.Utils;
 
-namespace OSCsharp
+namespace OSCsharp.Net
 {
     public class UDPReceiver
     {
@@ -174,22 +173,19 @@ namespace OSCsharp
 
         private void onBundleReceived(OscBundle bundle)
         {
-            if (BundleReceived != null)
-            {
-                BundleReceived(this, new OscBundleReceivedEventArgs(bundle));
+            if (BundleReceived != null) BundleReceived(this, new OscBundleReceivedEventArgs(bundle));
 
-                foreach (object value in bundle.Data)
+            foreach (object value in bundle.Data)
+            {
+                if (value is OscBundle)
                 {
-                    if (value is OscBundle)
-                    {
-                        // Raise events for nested bundles
-                        onBundleReceived((OscBundle)value);
-                    } else if (value is OscMessage)
-                    {
-                        // Raised events for contained messages
-                        OscMessage message = (OscMessage)value;
-                        onMessageReceived(message);
-                    }
+                    // Raise events for nested bundles
+                    onBundleReceived((OscBundle)value);
+                } else if (value is OscMessage)
+                {
+                    // Raised events for contained messages
+                    OscMessage message = (OscMessage)value;
+                    onMessageReceived(message);
                 }
             }
         }

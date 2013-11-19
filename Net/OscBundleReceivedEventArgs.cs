@@ -1,7 +1,7 @@
 using System;
 using OSCsharp.Data;
 
-namespace OSCsharp
+namespace OSCsharp.Net
 {
     public class OscBundleReceivedEventArgs : EventArgs
     {
