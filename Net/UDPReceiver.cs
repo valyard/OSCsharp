@@ -1,6 +1,7 @@
 /*
  * @author Paul Varcholik / pvarchol@bespokesoftware.org
  * @author Valentin Simonov / http://va.lent.in/
+ * @author Stefan Schlupek / http://monoflow.org
  */
 
 using System;
@@ -28,8 +29,22 @@ namespace OSCsharp.Net
 
         public event EventHandler<OscPacketReceivedEventArgs> PacketReceived;
         public event EventHandler<OscBundleReceivedEventArgs> BundleReceived;
-        public event EventHandler<OscMessageReceivedEventArgs> MessageReceived;
         public event EventHandler<ExceptionEventArgs> ErrorOccured;
+
+        //IOS version based on http://forum.unity3d.com/threads/113750-ExecutionEngineException-on-iOS-only
+        //works only if you compile with VS2008!
+        public delegate void MessageReceivedDelegate(object sender,OscMessageReceivedEventArgs e);
+        public MessageReceivedDelegate MessageReceivedInvoker;
+
+        public event MessageReceivedDelegate MessageReceived {
+            add {
+                MessageReceivedInvoker += value;
+            }
+            remove {
+                MessageReceivedInvoker -= value;
+            }
+        }
+
 
         public IPAddress IPAddress { get; private set; }
         public int Port { get; private set; }
@@ -47,20 +62,20 @@ namespace OSCsharp.Net
         private volatile bool acceptingConnections;
         private AsyncCallback callback;
 
-        public UDPReceiver(int port, bool consumeParsingExceptions = true) : this(IPAddress.Any, port, consumeParsingExceptions)
+        public UDPReceiver(int port, bool consumeParsingExceptions ) : this(IPAddress.Any, port, consumeParsingExceptions)
         {}
 
-        public UDPReceiver(int port, IPAddress multicastAddress, bool consumeParsingExceptions = true) : this(IPAddress.Loopback, port, TransmissionType.Multicast, multicastAddress, consumeParsingExceptions)
+        public UDPReceiver(int port, IPAddress multicastAddress, bool consumeParsingExceptions ) : this(IPAddress.Loopback, port, TransmissionType.Multicast, multicastAddress, consumeParsingExceptions)
         { }
 
-        public UDPReceiver(string ipAddress, int port, bool consumeParsingExceptions = true) : this(IPAddress.Parse(ipAddress), port, consumeParsingExceptions)
+        public UDPReceiver(string ipAddress, int port, bool consumeParsingExceptions ) : this(IPAddress.Parse(ipAddress), port, consumeParsingExceptions)
         {}
 
-        public UDPReceiver(IPAddress ipAddress, int port, bool consumeParsingExceptions = true) : this(ipAddress, port, TransmissionType.Unicast, null, consumeParsingExceptions)
+        public UDPReceiver(IPAddress ipAddress, int port, bool consumeParsingExceptions ) : this(ipAddress, port, TransmissionType.Unicast, null, consumeParsingExceptions)
         {}
 
 
-        public UDPReceiver(IPAddress ipAddress, int port, TransmissionType transmissionType, IPAddress multicastAddress, bool consumeParsingExceptions = true)
+        public UDPReceiver(IPAddress ipAddress, int port, TransmissionType transmissionType, IPAddress multicastAddress, bool consumeParsingExceptions )
         {
             IPAddress = ipAddress;
             Port = port;
@@ -200,7 +215,7 @@ namespace OSCsharp.Net
 
         private void onMessageReceived(OscMessage message)
         {
-            if (MessageReceived != null) MessageReceived(this, new OscMessageReceivedEventArgs(message));
+             if (MessageReceivedInvoker != null) MessageReceivedInvoker(this, new OscMessageReceivedEventArgs(message));
         }
 
         private void onError(Exception ex)
