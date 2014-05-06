@@ -108,7 +108,8 @@ namespace OSCsharp.Data
             return bundle;
         }
 
-        public override int Append<T>(T value)
+         //To prevent ExecutionEngineException: Attempting to JIT compile method  we use o non Generic Method version
+        public override int Append(object value)
         {
             if (!(value is OscPacket)) throw new ArgumentException();
 

@@ -147,7 +147,8 @@ namespace OSCsharp.Data
             return message;
         }
 
-        public override int Append<T>(T value)
+         //To prevent ExecutionEngineException: Attempting to JIT compile method  we use o non Generic Method version
+         public override int Append(object value) 
         {
             char typeTag;
 
@@ -212,7 +213,7 @@ namespace OSCsharp.Data
 
         public int AppendNil()
         {
-            return Append<object>(null);
+            return Append(null);
         }
 
         public virtual void UpdateDataAt(int index, object value)

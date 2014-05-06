@@ -50,7 +50,11 @@ namespace OSCsharp.Data
             data = new List<object>();
         }
 
-        public abstract int Append<T>(T value);
+        //To prevent ExecutionEngineException: Attempting to JIT compile method  we use o non Generic Method version
+        public abstract int Append(object value);
+
+
+
 
         public T At<T>(int index)
         {
