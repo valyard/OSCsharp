@@ -50,11 +50,8 @@ namespace OSCsharp.Data
             data = new List<object>();
         }
 
-        //To prevent ExecutionEngineException: Attempting to JIT compile method  we use o non Generic Method version
+        // To prevent "ExecutionEngineException: Attempting to JIT compile method" error on iOS we use a non-generic method version.
         public abstract int Append(object value);
-
-
-
 
         public T At<T>(int index)
         {

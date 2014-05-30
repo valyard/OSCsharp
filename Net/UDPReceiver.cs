@@ -31,20 +31,15 @@ namespace OSCsharp.Net
         public event EventHandler<OscBundleReceivedEventArgs> BundleReceived;
         public event EventHandler<ExceptionEventArgs> ErrorOccured;
 
-        //IOS version based on http://forum.unity3d.com/threads/113750-ExecutionEngineException-on-iOS-only
-        //works only if you compile with VS2008 or VS2013!
-        public delegate void MessageReceivedDelegate(object sender,OscMessageReceivedEventArgs e);
-        private MessageReceivedDelegate messageReceivedInvoker;
-
-        public event MessageReceivedDelegate MessageReceived {
-            add {
-                messageReceivedInvoker += value;
-            }
-            remove {
-                messageReceivedInvoker -= value;
-            }
+        public event EventHandler<OscMessageReceivedEventArgs> MessageReceived
+        {
+            add { messageReceivedInvoker += value; }
+            remove { messageReceivedInvoker -= value; }
         }
 
+        //IOS version based on http://forum.unity3d.com/threads/113750-ExecutionEngineException-on-iOS-only
+        //works only if you compile with VS2008 or VS2013!
+        private EventHandler<OscMessageReceivedEventArgs> messageReceivedInvoker;
 
         public IPAddress IPAddress { get; private set; }
         public int Port { get; private set; }
@@ -62,20 +57,20 @@ namespace OSCsharp.Net
         private volatile bool acceptingConnections;
         private AsyncCallback callback;
 
-        public UDPReceiver(int port, bool consumeParsingExceptions ) : this(IPAddress.Any, port, consumeParsingExceptions)
+        public UDPReceiver(int port, bool consumeParsingExceptions) : this(IPAddress.Any, port, consumeParsingExceptions)
         {}
 
-        public UDPReceiver(int port, IPAddress multicastAddress, bool consumeParsingExceptions ) : this(IPAddress.Loopback, port, TransmissionType.Multicast, multicastAddress, consumeParsingExceptions)
-        { }
-
-        public UDPReceiver(string ipAddress, int port, bool consumeParsingExceptions ) : this(IPAddress.Parse(ipAddress), port, consumeParsingExceptions)
+        public UDPReceiver(int port, IPAddress multicastAddress, bool consumeParsingExceptions) : this(IPAddress.Loopback, port, TransmissionType.Multicast, multicastAddress, consumeParsingExceptions)
         {}
 
-        public UDPReceiver(IPAddress ipAddress, int port, bool consumeParsingExceptions ) : this(ipAddress, port, TransmissionType.Unicast, null, consumeParsingExceptions)
+        public UDPReceiver(string ipAddress, int port, bool consumeParsingExceptions) : this(IPAddress.Parse(ipAddress), port, consumeParsingExceptions)
+        {}
+
+        public UDPReceiver(IPAddress ipAddress, int port, bool consumeParsingExceptions) : this(ipAddress, port, TransmissionType.Unicast, null, consumeParsingExceptions)
         {}
 
 
-        public UDPReceiver(IPAddress ipAddress, int port, TransmissionType transmissionType, IPAddress multicastAddress, bool consumeParsingExceptions )
+        public UDPReceiver(IPAddress ipAddress, int port, TransmissionType transmissionType, IPAddress multicastAddress, bool consumeParsingExceptions)
         {
             IPAddress = ipAddress;
             Port = port;
@@ -161,8 +156,7 @@ namespace OSCsharp.Net
                 {
                     udpClient.BeginReceive(callback, udpState);
                 }
-            }
-            catch (ObjectDisposedException)
+            } catch (ObjectDisposedException)
             {
                 // Suppress error
                 var a = 2;
@@ -215,13 +209,12 @@ namespace OSCsharp.Net
 
         private void onMessageReceived(OscMessage message)
         {
-             if (messageReceivedInvoker != null) messageReceivedInvoker(this, new OscMessageReceivedEventArgs(message));
+            if (messageReceivedInvoker != null) messageReceivedInvoker(this, new OscMessageReceivedEventArgs(message));
         }
 
         private void onError(Exception ex)
         {
             if (ErrorOccured != null) ErrorOccured(this, new ExceptionEventArgs(ex));
         }
-
     }
 }

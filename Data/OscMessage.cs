@@ -32,7 +32,11 @@ namespace OSCsharp.Data
             get { return false; }
         }
 
-        public string TypeTag { get { return typeTag;} }
+        public string TypeTag
+        {
+            get { return typeTag; }
+        }
+
         private string typeTag;
 
         public OscMessage(string address, object value)
@@ -148,8 +152,8 @@ namespace OSCsharp.Data
             return message;
         }
 
-         //To prevent ExecutionEngineException: Attempting to JIT compile method  we use o non Generic Method version
-         public override int Append(object value) 
+        // To prevent "ExecutionEngineException: Attempting to JIT compile method" error on iOS we use a non-generic method version.
+        public override int Append(object value)
         {
             char typeTag;
 

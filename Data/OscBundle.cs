@@ -108,7 +108,7 @@ namespace OSCsharp.Data
             return bundle;
         }
 
-         //To prevent ExecutionEngineException: Attempting to JIT compile method  we use o non Generic Method version
+        // To prevent "ExecutionEngineException: Attempting to JIT compile method" error on iOS we use a non-generic method version.
         public override int Append(object value)
         {
             if (!(value is OscPacket)) throw new ArgumentException();
