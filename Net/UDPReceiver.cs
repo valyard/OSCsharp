@@ -32,16 +32,16 @@ namespace OSCsharp.Net
         public event EventHandler<ExceptionEventArgs> ErrorOccured;
 
         //IOS version based on http://forum.unity3d.com/threads/113750-ExecutionEngineException-on-iOS-only
-        //works only if you compile with VS2008!
+        //works only if you compile with VS2008 or VS2013!
         public delegate void MessageReceivedDelegate(object sender,OscMessageReceivedEventArgs e);
-        public MessageReceivedDelegate MessageReceivedInvoker;
+        private MessageReceivedDelegate messageReceivedInvoker;
 
         public event MessageReceivedDelegate MessageReceived {
             add {
-                MessageReceivedInvoker += value;
+                messageReceivedInvoker += value;
             }
             remove {
-                MessageReceivedInvoker -= value;
+                messageReceivedInvoker -= value;
             }
         }
 
@@ -215,7 +215,7 @@ namespace OSCsharp.Net
 
         private void onMessageReceived(OscMessage message)
         {
-             if (MessageReceivedInvoker != null) MessageReceivedInvoker(this, new OscMessageReceivedEventArgs(message));
+             if (messageReceivedInvoker != null) messageReceivedInvoker(this, new OscMessageReceivedEventArgs(message));
         }
 
         private void onError(Exception ex)

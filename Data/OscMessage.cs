@@ -32,6 +32,7 @@ namespace OSCsharp.Data
             get { return false; }
         }
 
+        public string TypeTag { get { return typeTag;} }
         private string typeTag;
 
         public OscMessage(string address, object value)
