@@ -29,12 +29,11 @@ namespace OSCsharp.Data
             get
             {
                 List<OscBundle> bundles = new List<OscBundle>();
-                foreach (object value in data)
+                var count = data.Count;
+                for (var i = 0; i < count; i++)
                 {
-                    if (value is OscBundle)
-                    {
-                        bundles.Add((OscBundle)value);
-                    }
+                    var item = data[i] as OscBundle;
+                    if (item != null) bundles.Add(item);
                 }
 
                 return bundles.AsReadOnly();
@@ -46,12 +45,11 @@ namespace OSCsharp.Data
             get
             {
                 List<OscMessage> messages = new List<OscMessage>();
-                foreach (object value in data)
+                var count = data.Count;
+                for (var i = 0; i < count; i++)
                 {
-                    if (value is OscMessage)
-                    {
-                        messages.Add((OscMessage)value);
-                    }
+                    var item = data[i] as OscMessage;
+                    if (item != null) messages.Add(item);
                 }
 
                 return messages.AsReadOnly();
@@ -68,26 +66,28 @@ namespace OSCsharp.Data
 
         public override byte[] ToByteArray()
         {
-            List<byte> data = new List<byte>();
+            List<byte> bytes = new List<byte>();
 
-            data.AddRange(ValueToByteArray(address));
-            PadNull(data);
+            bytes.AddRange(ValueToByteArray(address));
+            PadNull(bytes);
 
-            data.AddRange(ValueToByteArray(timeStamp));
+            bytes.AddRange(ValueToByteArray(timeStamp));
 
-            foreach (object value in base.data)
+            var count = data.Count;
+            for (var i = 0; i < count; i++)
             {
-                if ((value is OscPacket))
+                var packet = data[i] as OscPacket;
+                if (packet != null)
                 {
-                    byte[] packetBytes = ((OscPacket)value).ToByteArray();
+                    byte[] packetBytes = packet.ToByteArray();
                     if (packetBytes.Length%4 != 0) throw new Exception();
 
-                    data.AddRange(ValueToByteArray(packetBytes.Length));
-                    data.AddRange(packetBytes);
+                    bytes.AddRange(ValueToByteArray(packetBytes.Length));
+                    bytes.AddRange(packetBytes);
                 }
             }
 
-            return data.ToArray();
+            return bytes.ToArray();
         }
 
         public static new OscBundle FromByteArray(byte[] data, ref int start, int end)

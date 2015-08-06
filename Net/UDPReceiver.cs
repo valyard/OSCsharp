@@ -192,8 +192,10 @@ namespace OSCsharp.Net
         {
             if (BundleReceived != null) BundleReceived(this, new OscBundleReceivedEventArgs(bundle));
 
-            foreach (object value in bundle.Data)
+            var count = bundle.Data.Count;
+            for (var i = 0; i < count; i++)
             {
+                object value = bundle.Data[i];
                 if (value is OscBundle)
                 {
                     // Raise events for nested bundles

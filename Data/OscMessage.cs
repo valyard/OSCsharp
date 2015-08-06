@@ -55,28 +55,30 @@ namespace OSCsharp.Data
 
         public override byte[] ToByteArray()
         {
-            List<byte> data = new List<byte>();
+            List<byte> bytes = new List<byte>();
 
-            data.AddRange(ValueToByteArray(address));
-            PadNull(data);
+            bytes.AddRange(ValueToByteArray(address));
+            PadNull(bytes);
 
-            data.AddRange(ValueToByteArray(typeTag));
-            PadNull(data);
+            bytes.AddRange(ValueToByteArray(typeTag));
+            PadNull(bytes);
 
-            foreach (object value in base.data)
+            var count = data.Count;
+            for (var i = 0; i < count; i++)
             {
-                byte[] bytes = ValueToByteArray(value);
-                if (bytes != null)
+                object value = data[i];
+                byte[] valueBytes = ValueToByteArray(value);
+                if (valueBytes != null)
                 {
-                    data.AddRange(bytes);
+                    bytes.AddRange(valueBytes);
                     if (value is string || value is byte[])
                     {
-                        PadNull(data);
+                        PadNull(bytes);
                     }
                 }
             }
 
-            return data.ToArray();
+            return bytes.ToArray();
         }
 
         public static OscMessage FromByteArray(byte[] data, ref int start)
@@ -85,8 +87,10 @@ namespace OSCsharp.Data
             OscMessage message = new OscMessage(address);
 
             char[] tags = ValueFromByteArray<string>(data, ref start).ToCharArray();
-            foreach (char tag in tags)
+            var count = tags.Length;
+            for (var i = 0; i < count; i++)
             {
+                char tag = tags[i];
                 object value;
                 switch (tag)
                 {
