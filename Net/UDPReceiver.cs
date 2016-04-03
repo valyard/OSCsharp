@@ -159,7 +159,9 @@ namespace OSCsharp.Net
             } catch (ObjectDisposedException)
             {
                 // Suppress error
+				#pragma warning disable 219
                 var a = 2;
+				#pragma warning restore 219
             }
         }
 
